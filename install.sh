@@ -12,8 +12,8 @@ fi
 #Exit on failure
 set -e
 
-apt-get update
-apt-get upgrade
+apt-get -y update
+apt-get -y upgrade
 # Probably breaks 
 #apt-get dist-upgrade
 
@@ -48,9 +48,9 @@ sleep 5s
 ##### Install sublime
 (( STAGE++ )); echo -e "\n\n ${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Sublime${RESET} Text editor"
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add - || echo -e ' '${RED}'[!] Issue with key install install'${RESET} 1>&2
-sudo apt-get install apt-transport-https || echo -e ' '${RED}'[!] Issue with apt support lib install'${RESET} 1>&2
+apt-get -y install apt-transport-https || echo -e ' '${RED}'[!] Issue with apt support lib install'${RESET} 1>&2
 echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list || echo -e ' '${RED}'[!] Issue with adding to source list install'${RESET} 1>&2
-sudo apt-get update && sudo apt-get install sublime-text || echo -e ' '${RED}'[!] Issue with apt install'${RESET} 1>&2
+apt-get update && apt-get -y install sublime-text || echo -e ' '${RED}'[!] Issue with apt install'${RESET} 1>&2
 
 ##TODO add symbolic link to /usr/bin/subl
 #ln -s xxx /usr/bin/subl
@@ -131,7 +131,7 @@ git clone https://github.com/tcstool/NoSQLMap.git /opt/NoSQLMap \
 #### Install pwntools
 (( STAGE++ )); echo -e "\n\n ${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Pwntools${RESET} ~ A toolsuite for ctfs."
 ### Py2
-apt-get install python2.7 python-pip python-dev git libssl-dev libffi-dev build-essential || echo -e ' '${RED}'[!] Issue when installing dependencies (apt)'${RESET} 1>&2
+apt-get -y install python2.7 python-pip python-dev git libssl-dev libffi-dev build-essential || echo -e ' '${RED}'[!] Issue when installing dependencies (apt)'${RESET} 1>&2
 pip install --upgrade pip || echo -e ' '${RED}'[!] Issue when updating pip'${RESET} 1>&2
 pip install --upgrade pwntools || echo -e ' '${RED}'[!] Issue when installing with pip'${RESET} 1>&2
 
