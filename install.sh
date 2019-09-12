@@ -202,6 +202,12 @@ cd /opt
 rmdir ghidra
 ln -s /opt/ghidra_9.0.4/ghidraRun /usr/bin/ghidra || echo -e ''${RED}'[!] Error when creating symbolic link.'${RESET} 1>&2
 
+#### Install Reverse Shell Generator
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Ghidra${RESET} ~ RE tool."
+cd /opt
+git clone https://github.com/mthbernardes/rsg.git || echo -e ''${RED}'[!] Issue when cloning repo'${RESET} 1>&2
+cd rsg
+./install.sh || echo -e ''${RED}'[!] Issue when running install script'${RESET} 1>&2
 
 
 
