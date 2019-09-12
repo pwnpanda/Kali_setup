@@ -114,7 +114,7 @@ apt-get install -y bloodhound || echo -e ''${RED}'[!] Issue with apt install'${R
 ## Crackmapexec - Dev version
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}crackmap${RESET} ~ Dev version"
 apt-get install -y libssl-dev libffi-dev python-dev build-essential || echo -e ''${RED}'[!] Issue with apt support libs install'${RESET} 1>&2
- apt install pipenv || echo -e ''${RED}'[!] Issue with apt install of pipenv'${RESET} 1>&2
+apt install -y pipenv || echo -e ''${RED}'[!] Issue with apt install of pipenv'${RESET} 1>&2
 cd /opt/
 git clone --recursive https://github.com/byt3bl33d3r/CrackMapExec || echo -e ''${RED}'[!] Issue with cloning repo'${RESET} 1>&2
 cd CrackMapExec && pipenv install || echo -e ''${RED}'[!] Issue with pipenv install'${RESET} 1>&2
