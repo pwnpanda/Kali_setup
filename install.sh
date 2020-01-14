@@ -46,6 +46,7 @@ systemctl start postgresql
 msfdb reinit
 sleep 5s
 
+curdir=`pwd`
 
 ##### Install sublime
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Sublime${RESET} Text editor"
@@ -73,6 +74,7 @@ sudo ./setup.py install --record installed.txt  || echo -e ''${RED}'[!] Issue wi
 
 #install dependency
 pip install pexpect | echo -e ''${RED}'[!] Issue with installing last dependency through pip'${RESET} 1>&2
+
 # Run flux
 #fluxgui
 
@@ -202,6 +204,7 @@ cd /opt
 rmdir ghidra
 ln -s /opt/ghidra_9.0.4/ghidraRun /usr/bin/ghidra || echo -e ''${RED}'[!] Error when creating symbolic link.'${RESET} 1>&2
 
+
 #### Install Reverse Shell Generator
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Ghidra${RESET} ~ RE tool."
 cd /opt
@@ -210,6 +213,46 @@ cd rsg
 ./install.sh || echo -e ''${RED}'[!] Issue when running install script'${RESET} 1>&2
 
 
+# TODO add troubleshooting
+#### Install ZSH & Terminal
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}ZSH${RESET} ~ CMD."
+#Install zsh
+apt-get -y install zsh || echo -e ''${RED}'[!] Issue when installing (apt)'${RESET} 1>&2
+
+#Add .zshrc
+cd curdir
+cp zshrc ~/.zshrc
+
+#Add antigen
+cd /opt/
+mkdir antigen && cd antigen
+curl -L git.io/antigen > /opt/antigen/antigen.zsh  || echo -e ''${RED}'[!] Issue when getting antigen with curl'${RESET} 1>&2
+
+#Add syntax highlights
+cd /opt
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+
+# Add font
+# https://medium.com/source-words/how-to-manually-install-update-and-uninstall-fonts-on-linux-a8d09a3853b0
+cd curdir
+mkdir -p /usr/share/fonts/truetype/FiraCode
+cp *.tff /usr/share/fonts/truetype/FiraCode
+fc-cache -f -v
+
+#Add terminal Terminal Emulator (xfce4-terminal)
+apt-get install xfce4-terminal
+
+#Add framer theme
+cd curdir
+mkdir -p  ~/.local/share/xfce4/terminal/colorschemes
+cp *.theme ~/.local/share/xfce4/terminal/colorschemes
+
+#Set ZSH as default
+chsh /usr/bin/zsh
+chsh -s /usr/bin/zsh robin
+
+#Add instructions
+echo "Set terminal to XFC4, Set theme to Framer, Add FiraCode as font, Doublecheck that zsh is the default shell"
 
  ##### Clean the system
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) ${GREEN}Cleaning${RESET} the system"
