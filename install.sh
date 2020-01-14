@@ -213,7 +213,6 @@ cd rsg
 ./install.sh || echo -e ''${RED}'[!] Issue when running install script'${RESET} 1>&2
 
 
-# TODO add troubleshooting
 #### Install ZSH & Terminal
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}ZSH${RESET} ~ CMD."
 #Install zsh
