@@ -221,7 +221,7 @@ apt-get -y install zsh || echo -e ''${RED}'[!] Issue when installing (apt)'${RES
 
 #Add .zshrc
 cd curdir
-cp zshrc ~/.zshrc
+cp zshrc ~/.zshrc 
 
 #Add antigen
 cd /opt/
@@ -230,17 +230,17 @@ curl -L git.io/antigen > /opt/antigen/antigen.zsh  || echo -e ''${RED}'[!] Issue
 
 #Add syntax highlights
 cd /opt
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git || echo -e ''${RED}'[!] Issue when cloning zsh-syntax-highlighting from git'${RESET} 1>&2
 
 # Add font
 # https://medium.com/source-words/how-to-manually-install-update-and-uninstall-fonts-on-linux-a8d09a3853b0
 cd curdir
 mkdir -p /usr/share/fonts/truetype/FiraCode
 cp *.tff /usr/share/fonts/truetype/FiraCode
-fc-cache -f -v
+fc-cache -f -v || echo -e ''${RED}'[!] Issue when updating font cache'${RESET} 1>&2
 
 #Add terminal Terminal Emulator (xfce4-terminal)
-apt-get install xfce4-terminal
+apt-get install xfce4-terminal || echo -e ''${RED}'[!] Issue when installing xfce4 from apt'${RESET} 1>&2
 
 #Add framer theme
 cd curdir
@@ -248,8 +248,8 @@ mkdir -p  ~/.local/share/xfce4/terminal/colorschemes
 cp *.theme ~/.local/share/xfce4/terminal/colorschemes
 
 #Set ZSH as default
-chsh /usr/bin/zsh
-chsh -s /usr/bin/zsh robin
+chsh /usr/bin/zsh || echo -e ''${RED}'[!] Issue when setting zsh as default'${RESET} 1>&2
+chsh -s /usr/bin/zsh robin || echo -e ''${RED}'[!] Issue when setting zsh as default for Robin'${RESET} 1>&2
 
 #Add instructions
 echo "Set terminal to XFC4, Set theme to Framer, Add FiraCode as font, Doublecheck that zsh is the default shell"

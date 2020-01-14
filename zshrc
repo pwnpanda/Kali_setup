@@ -70,14 +70,15 @@ source /opt/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 #PROMPT='%F{red}%1~%f %# '
 #RPROMPT='%F{green}%*'
 
-function list_all() {
-    emulate -L zsh
-    ls -lacf
-}
-chpwd_functions=(${chpwd_functions[@]} "list_all")
+#function list_all() {
+#    emulate -L zsh
+#    ls
+#}
+#chpwd_functions=(${chpwd_functions[@]} "list_all")
 
 # some more ls aliases
-alias ls="ls -G"
+alias ls="ls --color=force"
+#alias ls="ls -G"
 alias la='ls -A'
 alias l='ls -CF'
 # taken from https://natelandau.com/my-mac-osx-bash_profile/
@@ -86,7 +87,7 @@ alias mv='mv -iv'                           # Preferred 'mv' implementation
 alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
 alias ll='ls -FGlAhp'                       # Preferred 'ls' implementation
 alias less='less -FSRXc'                    # Preferred 'less' implementation
-#cd() { builtin cd "$@"; ll -FGlAhp; }       # Always list directory contents upon 'cd'
+cd() { builtin cd "$@"; ll -FGlAhp; }       # Always list directory contents upon 'cd'
 alias cd..='cd ../'                         # Go back 1 directory level (for fast typers)
 alias ..='cd ../'                           # Go back 1 directory level
 alias which='type -all'                     # which:        Find executables
