@@ -48,7 +48,6 @@ sleep 5s
 
 curdir=`pwd`
 
-
 ##### Install sublime
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Sublime${RESET} Text editor"
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add - || echo -e ''${RED}'[!] Issue with key install install'${RESET} 1>&2
@@ -72,6 +71,9 @@ cd fluxgui
 
 # install system wide
 sudo ./setup.py install --record installed.txt  || echo -e ''${RED}'[!] Issue with install'${RESET} 1>&2
+
+#install dependency
+pip install pexpect | echo -e ''${RED}'[!] Issue with installing last dependency through pip'${RESET} 1>&2
 
 # Run flux
 #fluxgui
@@ -114,7 +116,7 @@ apt-get install -y bloodhound || echo -e ''${RED}'[!] Issue with apt install'${R
 ## Crackmapexec - Dev version
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}crackmap${RESET} ~ Dev version"
 apt-get install -y libssl-dev libffi-dev python-dev build-essential || echo -e ''${RED}'[!] Issue with apt support libs install'${RESET} 1>&2
- apt install pipenv || echo -e ''${RED}'[!] Issue with apt install of pipenv'${RESET} 1>&2
+apt install -y pipenv || echo -e ''${RED}'[!] Issue with apt install of pipenv'${RESET} 1>&2
 cd /opt/
 git clone --recursive https://github.com/byt3bl33d3r/CrackMapExec || echo -e ''${RED}'[!] Issue with cloning repo'${RESET} 1>&2
 cd CrackMapExec && pipenv install || echo -e ''${RED}'[!] Issue with pipenv install'${RESET} 1>&2
@@ -202,6 +204,15 @@ cd /opt
 rmdir ghidra
 ln -s /opt/ghidra_9.0.4/ghidraRun /usr/bin/ghidra || echo -e ''${RED}'[!] Error when creating symbolic link.'${RESET} 1>&2
 
+
+#### Install Reverse Shell Generator
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Ghidra${RESET} ~ RE tool."
+cd /opt
+git clone https://github.com/mthbernardes/rsg.git || echo -e ''${RED}'[!] Issue when cloning repo'${RESET} 1>&2
+cd rsg
+./install.sh || echo -e ''${RED}'[!] Issue when running install script'${RESET} 1>&2
+
+
 # TODO add troubleshooting
 #### Install ZSH & Terminal
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}ZSH${RESET} ~ CMD."
@@ -217,7 +228,7 @@ cd /opt/
 mkdir antigen && cd antigen
 curl -L git.io/antigen > /opt/antigen/antigen.zsh  || echo -e ''${RED}'[!] Issue when getting antigen with curl'${RESET} 1>&2
 
-#Add 
+#Add syntax highlights
 cd /opt
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git
 
