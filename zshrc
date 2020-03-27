@@ -13,6 +13,18 @@ export TERM="xterm-256color"
 #Antigen
 source /opt/antigen/antigen.zsh
 antigen theme bhilburn/powerlevel9k powerlevel9k
+
+# Plugins
+source /opt/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/zsh-autosuggestions/zsh-autosuggestions.zsh
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator history time battery)
+POWERLEVEL9K_BATTERY_ICON=$'\uF240'
+POWERLEVEL9K_MODE="nerdfont-complete"
+POWERLEVEL9K_USER_ROOT_ICON=$'\uF198'
+
+
+#PROMPT='%F{red}%1~%f %# '
+#RPROMPT='%F{green}%*'
 antigen apply
 
 
@@ -58,27 +70,21 @@ autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
-#bindkey "^[[A" up-line-or-beginning-search
-#bindkey "^[[B" down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search
+bindkey "^[[B" down-line-or-beginning-search
 
-#bindkey "\e[1;3D" backward-word
-#bindkey "\e[1;3C" forward-word
+bindkey "\e[1;3D" backward-word
+bindkey "\e[1;3C" forward-word
 
-# Plugins
-source /opt/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-#PROMPT='%F{red}%1~%f %# '
-#RPROMPT='%F{green}%*'
-
-#function list_all() {
-#    emulate -L zsh
-#    ls
-#}
-#chpwd_functions=(${chpwd_functions[@]} "list_all")
+function list_all() {
+    emulate -L zsh
+    ls -lacf
+}
+chpwd_functions=(${chpwd_functions[@]} "list_all")
 
 # some more ls aliases
-alias ls="ls --color=force"
-#alias ls="ls -G"
+alias ls="ls -G"
 alias la='ls -A'
 alias l='ls -CF'
 # taken from https://natelandau.com/my-mac-osx-bash_profile/
@@ -87,7 +93,7 @@ alias mv='mv -iv'                           # Preferred 'mv' implementation
 alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
 alias ll='ls -FGlAhp'                       # Preferred 'ls' implementation
 alias less='less -FSRXc'                    # Preferred 'less' implementation
-cd() { builtin cd "$@"; ll -FGlAhp; }       # Always list directory contents upon 'cd'
+#cd() { builtin cd "$@"; ll -FGlAhp; }       # Always list directory contents upon 'cd'
 alias cd..='cd ../'                         # Go back 1 directory level (for fast typers)
 alias ..='cd ../'                           # Go back 1 directory level
 alias which='type -all'                     # which:        Find executables
@@ -119,6 +125,8 @@ if [ -f $1 ] ; then
  fi
 }
 
+
+
 function subl {
   if [ "$1" != "" ]; then
     sublime $1
@@ -135,5 +143,10 @@ function signapk {
   fi
 }    
 
+
 #alias
 alias reload='source ~/.zshrc'
+alias ghidra="/opt/ghidra_9.0.4/ghidraRun &"
+alias bytecodeviwer="java -jar /opt/Bytecode-Viewer*"
+alias lsof="lsof -n"
+

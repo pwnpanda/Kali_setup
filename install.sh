@@ -219,9 +219,8 @@ cd rsg
 apt-get -y install zsh || echo -e ''${RED}'[!] Issue when installing (apt)'${RESET} 1>&2
 
 #Add .zshrc
-cd ~/
-git clone 
-cp zshrc ~/.zshrc 
+cp /opt/Kali_setup/zshrc ~/.zshrc
+cp /opt/Kali_setup/zshrc /root/.zshrc
 
 #Add antigen
 cd /opt/
@@ -240,7 +239,7 @@ git clone https://github.com/zsh-users/zsh-autosuggestions.git || echo -e ''${RE
 # https://medium.com/source-words/how-to-manually-install-update-and-uninstall-fonts-on-linux-a8d09a3853b0
 cd curdir
 mkdir -p /usr/share/fonts/truetype/FiraCode
-cp *.tff /usr/share/fonts/truetype/FiraCode
+cp *.ttf /usr/share/fonts/truetype/FiraCode
 fc-cache -f -v || echo -e ''${RED}'[!] Issue when updating font cache'${RESET} 1>&2
 
 #Add terminal Terminal Emulator (xfce4-terminal)
@@ -260,6 +259,29 @@ chsh -s /usr/bin/zsh robin || echo -e ''${RED}'[!] Issue when setting zsh as def
 #Add instructions
 echo "Set terminal to XFC4, Set theme to Framer, Add FiraCode as font, Doublecheck that zsh is the default shell"
 
+
+#### Install priv keys and config
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}keys and ssh config${RESET} ~ Shell env."
+
+cd /opt
+git clone git@github.com:Robiq/Keys.git || echo -e ''${RED}'[!] Issue when pulling keys from git'${RESET} 1>&2
+cd Keys
+mkdir /home/robin/.ssh || echo -e ''${RED}'[!] Issue when creating .ssh folder - may already exist'${RESET} 1>&2
+cp * /home/robin/.ssh/
+chmod 600 /home/robin/.ssh/*.priv || echo -e ''${RED}'[!] Issue when changing file permissions'${RESET} 1>&2
+eval "$(ssh-agent -s)"
+ssh-add /home/robin/.ssh/*.priv || echo -e ''${RED}'[!] Issue when adding keys to agent'${RESET} 1>&2
+rm -rf /opt/Keys
+
+
+# Install bytecode-viwer
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) zshInstalling ${GREEN}Bytecode Viewer${RESET} ~ HexEditor."
+
+cd /opt
+wget https://github.com/Konloch/bytecode-viewer/releases/download/v2.9.22/Bytecode-Viewer-2.9.22.jar || echo -e ''${RED}'[!] Issue when pulling jarfile'${RESET} 1>&2
+
+
+
  ##### Clean the system
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) ${GREEN}Cleaning${RESET} the system"
 #--- Clean package manager
@@ -269,5 +291,7 @@ apt -y -qq purge $(dpkg -l | tail -n +6 | egrep -v '^(h|i)i' | awk '{print $2}')
 updatedb
 #--- Reset folder location
 cd ~/ &>/dev/null
+# change ownership
+chown -R robin:robin /opt
 
 exit
