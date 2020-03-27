@@ -219,7 +219,8 @@ cd rsg
 apt-get -y install zsh || echo -e ''${RED}'[!] Issue when installing (apt)'${RESET} 1>&2
 
 #Add .zshrc
-cd curdir
+cd ~/
+git clone 
 cp zshrc ~/.zshrc 
 
 #Add antigen
@@ -230,6 +231,10 @@ curl -L git.io/antigen > /opt/antigen/antigen.zsh  || echo -e ''${RED}'[!] Issue
 #Add syntax highlights
 cd /opt
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git || echo -e ''${RED}'[!] Issue when cloning zsh-syntax-highlighting from git'${RESET} 1>&2
+
+#Add auto complete
+cd /opt
+git clone https://github.com/zsh-users/zsh-autosuggestions.git || echo -e ''${RED}'[!] Issue when cloning zsh-autosuggestions from git'${RESET} 1>&2
 
 # Add font
 # https://medium.com/source-words/how-to-manually-install-update-and-uninstall-fonts-on-linux-a8d09a3853b0
@@ -243,11 +248,13 @@ apt-get install xfce4-terminal || echo -e ''${RED}'[!] Issue when installing xfc
 
 #Add framer theme
 cd curdir
-mkdir -p  ~/.local/share/xfce4/terminal/colorschemes
-cp *.theme ~/.local/share/xfce4/terminal/colorschemes
+mkdir -p  /home/robin/.local/share/xfce4/terminal/colorschemes
+cp *.theme /home/robin/.local/share/xfce4/terminal/colorschemes
+
+cp terminalrc /home/robin/.config/xfce4/terminal/
 
 #Set ZSH as default
-chsh /usr/bin/zsh || echo -e ''${RED}'[!] Issue when setting zsh as default'${RESET} 1>&2
+chsh /bin/zsh || echo -e ''${RED}'[!] Issue when setting zsh as default'${RESET} 1>&2
 chsh -s /usr/bin/zsh robin || echo -e ''${RED}'[!] Issue when setting zsh as default for Robin'${RESET} 1>&2
 
 #Add instructions
