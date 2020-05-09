@@ -6,13 +6,15 @@ export VISUAL="vim"
 export EDITOR="vim"
 
 export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
+#export LC_ALL=en_US.UTF-8
+export LC_CTYPE="en_US.UTF-8"
 export TERM="xterm-256color"
 
 
 #Antigen
 source /opt/antigen/antigen.zsh
-antigen theme bhilburn/powerlevel9k powerlevel9k
+#antigen theme bhilburn/powerlevel9k powerlevel9k
+antigen theme romkatv/powerlevel10k
 
 # Plugins
 source /opt/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -96,7 +98,7 @@ alias less='less -FSRXc'                    # Preferred 'less' implementation
 #cd() { builtin cd "$@"; ll -FGlAhp; }       # Always list directory contents upon 'cd'
 alias cd..='cd ../'                         # Go back 1 directory level (for fast typers)
 alias ..='cd ../'                           # Go back 1 directory level
-alias which='type -all'                     # which:        Find executables
+alias which='type -a'                     # which:        Find executables
 #alias cic='set completion-ignore-case On'   # cic:          Make tab-completion case-insensitive
 alias myip='curl ip.appspot.com'                    # myip:         Public facing IP Address
 alias gpull='git pull --rebase && git submodule update --init --recursive'
@@ -149,4 +151,5 @@ alias reload='source ~/.zshrc'
 alias ghidra="/opt/ghidra_9.0.4/ghidraRun &"
 alias bytecodeviwer="java -jar /opt/Bytecode-Viewer*"
 alias lsof="lsof -n"
+alias top="htop"
 

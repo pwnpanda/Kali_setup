@@ -169,6 +169,10 @@ python3 -m pip install --upgrade git+https://github.com/Gallopsled/pwntools.git@
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}steghide${RESET} ~ Steganography tool."
 apt-get -y install steghide || echo -e ''${RED}'[!] Issue when installing (apt)'${RESET} 1>&2
 
+#### Install steghide
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}KeePass${RESET} ~ PW Manager."
+apt-get -y install keepassxc || echo -e ''${RED}'[!] Issue when installing (apt)'${RESET} 1>&2
+
 
 #### Install stegsolve
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}stegsolve${RESET} ~ Steganography tool."
@@ -239,7 +243,9 @@ git clone https://github.com/zsh-users/zsh-autosuggestions.git || echo -e ''${RE
 # https://medium.com/source-words/how-to-manually-install-update-and-uninstall-fonts-on-linux-a8d09a3853b0
 cd curdir
 mkdir -p /usr/share/fonts/truetype/FiraCode
-cp *.ttf /usr/share/fonts/truetype/FiraCode
+cp Fira*.ttf /usr/share/fonts/truetype/FiraCode
+mkdir -p /usr/share/fonts/truetype/MesloLGS
+cp Meslo*.ttf /usr/share/fonts/truetype/MesloLGS
 fc-cache -f -v || echo -e ''${RED}'[!] Issue when updating font cache'${RESET} 1>&2
 
 #Add terminal Terminal Emulator (xfce4-terminal)
@@ -255,6 +261,13 @@ cp terminalrc /home/robin/.config/xfce4/terminal/
 #Set ZSH as default
 chsh /bin/zsh || echo -e ''${RED}'[!] Issue when setting zsh as default'${RESET} 1>&2
 chsh -s /usr/bin/zsh robin || echo -e ''${RED}'[!] Issue when setting zsh as default for Robin'${RESET} 1>&2
+
+# Install Tmux Plugin manager
+git clone https://github.com/tmux-plugins/tpm /opt/.tmux/plugins/tpm || echo -e ''${RED}'[!] Issue when pulling tmp from git'${RESET} 1>&2
+
+# Install tmux config
+cp /opt/Kali_setup/tmux.conf ~/.tmux.conf
+cp /opt/Kali_setup/tmux.conf /root/.tmux.conf
 
 #Add instructions
 echo "Set terminal to XFC4, Set theme to Framer, Add FiraCode as font, Doublecheck that zsh is the default shell"
