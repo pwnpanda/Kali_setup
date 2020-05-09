@@ -13,8 +13,8 @@ export TERM="xterm-256color"
 
 #Antigen
 source /opt/antigen/antigen.zsh
-#antigen theme bhilburn/powerlevel9k powerlevel9k
-antigen theme romkatv/powerlevel10k
+antigen theme bhilburn/powerlevel9k powerlevel9k
+#antigen theme romkatv/powerlevel10k
 
 # Plugins
 source /opt/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
