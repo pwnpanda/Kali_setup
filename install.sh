@@ -12,10 +12,10 @@ fi
 #Exit on failure - not working properly :(
 #set -e
 
+# Upgrade distro
 apt-get -y update
 apt-get -y upgrade
-# Probably breaks 
-#apt-get dist-upgrade
+apt-get -y dist-upgrade
 
 ##### (Cosmetic) Colour output
 RED="\033[01;31m"      # Issues/Errors
@@ -30,7 +30,24 @@ STAGE=0                                                         # Where are we u
 TOTAL=$( grep '(${STAGE}/${TOTAL})' $0 | wc -l );(( TOTAL-- ))  # How many things have we got todo
 
 # TODO
-# bat, xxh, vscodium
+  # bat
+  # apt install -y bat
+  # mkdir -p ~/.local/bin
+  # ln -s /usr/bin/batcat ~/.local/bin/bat
+
+  # xxh
+  # pip3 install -y xxh-xxh
+  # xxh +RI xxh-plugin-zsh-robin+git+https://github.com/pwnpanda/xxh-plugin-zsh-robin
+
+  # vscodium
+  # wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
+  #  | gpg --dearmor \
+  #  | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
+  # echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs vscodium main' \
+  #  | sudo tee /etc/apt/sources.list.d/vscodium.list
+  # sudo apt update
+  # sudo apt install codium
+
 
 #### Add custom symbolic links
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Symlinks${RESET} Adding custom symlinks to /opt"
