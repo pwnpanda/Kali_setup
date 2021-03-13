@@ -29,7 +29,7 @@ RESET="\033[00m"       # Normal
 STAGE=0                                                         # Where are we up to
 TOTAL=$( grep '(${STAGE}/${TOTAL})' $0 | wc -l );(( TOTAL-- ))  # How many things have we got todo
 
-
+# TODO
 # bat, xxh, vscodium
 
 #### Add custom symbolic links
@@ -49,37 +49,6 @@ msfdb reinit
 sleep 5s
 
 curdir=`pwd`
-
-##### Install sublime
-(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Sublime${RESET} Text editor"
-wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add - || echo -e ''${RED}'[!] Issue with key install install'${RESET} 1>&2
-apt-get -y install apt-transport-https || echo -e ''${RED}'[!] Issue with apt support lib install'${RESET} 1>&2
-echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list || echo -e ''${RED}'[!] Issue with adding to source list install'${RESET} 1>&2
-apt-get update && apt-get -y install sublime-text || echo -e ''${RED}'[!] Issue with apt install'${RESET} 1>&2
-
-##Add symbolic link to /usr/bin/subl
-ln -s /opt/sublime_text/sublime_text /usr/bin/sublime
-
-#### install flux
-(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}flux${RESET} Yellow screen shift"
-sudo apt-get install python3-distutils gir1.2-appindicator3-0.1 gir1.2-gtk-3.0
-sudo apt-get install git python-appindicator python-xdg python-pexpect python-gconf python-gtk2 python-glade2 libxxf86vm1  libcanberra-gtk-module
-
-# Download fluxgui
-cd /opt
-git clone "https://github.com/xflux-gui/fluxgui.git" || echo -e ''${RED}'[!] Issue with cloning repo'${RESET} 1>&2
-cd fluxgui
-./download-xflux.py  || echo -e ''${RED}'[!] Issue with building'${RESET} 1>&2
-
-# install system wide
-sudo ./setup.py install --record installed.txt  || echo -e ''${RED}'[!] Issue with install'${RESET} 1>&2
-
-#install dependency
-pip install pexpect | echo -e ''${RED}'[!] Issue with installing last dependency through pip'${RESET} 1>&2
-
-# Run flux
-#fluxgui
-
 
 ##### Install go
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}go${RESET} ~ programming language"
@@ -171,7 +140,7 @@ python3 -m pip install --upgrade git+https://github.com/Gallopsled/pwntools.git@
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}steghide${RESET} ~ Steganography tool."
 apt-get -y install steghide || echo -e ''${RED}'[!] Issue when installing (apt)'${RESET} 1>&2
 
-#### Install steghide
+#### Install keepassxc
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}KeePass${RESET} ~ PW Manager."
 apt-get -y install keepassxc || echo -e ''${RED}'[!] Issue when installing (apt)'${RESET} 1>&2
 
@@ -182,14 +151,11 @@ cd /opt
 mkdir stegsolve && cd stegsolve
 wget http://www.caesum.com/handbook/Stegsolve.jar -O stegsolve.jar || echo -e ''${RED}'[!] Issue when downloading'${RESET} 1>&2
 chmod +x stegsolve.jar || echo -e ''${RED}'[!] Issue when making executable'${RESET} 1>&2
-echo 'alias stegsolve="java -jar /opt/stegsolve/stegsolve.jar"' >> ~/.bashrc
-
 
 
 #### Install exiftool
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Exiftool${RESET} ~ Exif tool."
 apt-get -y install exiftool || echo -e ''${RED}'[!] Issue when installing (apt)'${RESET} 1>&2
-
 
 
 #### Install unicorn
@@ -202,13 +168,13 @@ git clone https://github.com/trustedsec/unicorn.git || echo -e ''${RED}'[!] Issu
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Ghidra${RESET} ~ RE tool."
 cd /opt/
 mkdir ghidra && cd ghidra
-wget https://ghidra-sre.org/ghidra_9.0.4_PUBLIC_20190516.zip || echo -e ''${RED}'[!] Issue when getting zipfile'${RESET} 1>&2
-unzip ghidra_9.0.4_PUBLIC_20190516.zip || echo -e ''${RED}'[!] Error when extracting archive'${RESET} 1>&2
-rm ghidra_9.0.4_PUBLIC_20190516.zip
-mv ghidra_9.0.4 /opt
+wget https://ghidra-sre.org/ghidra_9.2.2_PUBLIC_20201229.zip || echo -e ''${RED}'[!] Issue when getting zipfile'${RESET} 1>&2
+unzip ghidra_9.2.2_PUBLIC_20201229.zip || echo -e ''${RED}'[!] Error when extracting archive'${RESET} 1>&2
+rm ghidra_9.2.2_PUBLIC_20201229.zip
+mv ghidra_9.2.2 /opt
 cd /opt
 rmdir ghidra
-ln -s /opt/ghidra_9.0.4/ghidraRun /usr/bin/ghidra || echo -e ''${RED}'[!] Error when creating symbolic link.'${RESET} 1>&2
+ln -s /opt/ghidra_9.2.2/ghidraRun /usr/bin/ghidra || echo -e ''${RED}'[!] Error when creating symbolic link.'${RESET} 1>&2
 
 
 #### Install Reverse Shell Generator
@@ -256,13 +222,17 @@ apt-get install xfce4-terminal || echo -e ''${RED}'[!] Issue when installing xfc
 #Add framer theme
 cd curdir
 mkdir -p  /home/robin/.local/share/xfce4/terminal/colorschemes
+mkdir -p /root/.local/share/xfce4/terminal/colorschemes
 cp *.theme /home/robin/.local/share/xfce4/terminal/colorschemes
+cp *.theme /root/.local/share/xfce4/terminal/colorschemes
 
 cp terminalrc /home/robin/.config/xfce4/terminal/
+cp terminalrc /root/.config/xfce4/terminal/
 
 #Set ZSH as default
 chsh /bin/zsh || echo -e ''${RED}'[!] Issue when setting zsh as default'${RESET} 1>&2
 chsh -s /usr/bin/zsh robin || echo -e ''${RED}'[!] Issue when setting zsh as default for Robin'${RESET} 1>&2
+chsh -s /usr/bin/zsh root || echo -e ''${RED}'[!] Issue when setting zsh as default for Robin'${RESET} 1>&2
 
 # Install Tmux Plugin manager
 git clone https://github.com/tmux-plugins/tpm /opt/.tmux/plugins/tpm || echo -e ''${RED}'[!] Issue when pulling tmp from git'${RESET} 1>&2
@@ -270,6 +240,10 @@ git clone https://github.com/tmux-plugins/tpm /opt/.tmux/plugins/tpm || echo -e 
 # Install tmux config
 cp /opt/Kali_setup/tmux.conf ~/.tmux.conf
 cp /opt/Kali_setup/tmux.conf /root/.tmux.conf
+
+# Install vimrc
+cp /opt/Kali_setup/vimrc ~/.vimrc
+cp /opt/Kali_setup/vimrc /root/.vimrc
 
 #Add instructions
 echo "Set terminal to XFC4, Set theme to Framer, Add FiraCode as font, Doublecheck that zsh is the default shell"
@@ -291,7 +265,6 @@ rm -rf /opt/Keys
 
 # Install bytecode-viwer
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) zshInstalling ${GREEN}Bytecode Viewer${RESET} ~ HexEditor."
-
 cd /opt
 wget https://github.com/Konloch/bytecode-viewer/releases/download/v2.9.22/Bytecode-Viewer-2.9.22.jar || echo -e ''${RED}'[!] Issue when pulling jarfile'${RESET} 1>&2
 

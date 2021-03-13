@@ -60,7 +60,7 @@ alias gpull='git pull --rebase && git submodule update --init --recursive'
 alias diff="diff --color"
 alias ghidra="ghidraRun"
 alias powershell="pwsh"
-alias ghidra="/opt/ghidra_9.0.4/ghidraRun &"
+alias ghidra="/opt/ghidra_9.2.2/ghidraRun &"
 alias bytecodeviwer="java -jar /opt/Bytecode-Viewer*"
 
 # taken from https://natelandau.com/my-mac-osx-bash_profile/
