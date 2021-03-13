@@ -30,6 +30,8 @@ STAGE=0                                                         # Where are we u
 TOTAL=$( grep '(${STAGE}/${TOTAL})' $0 | wc -l );(( TOTAL-- ))  # How many things have we got todo
 
 
+# bat, xxh, vscodium
+
 #### Add custom symbolic links
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Symlinks${RESET} Adding custom symlinks to /opt"
 ln -s /usr/share/wordlists /opt/

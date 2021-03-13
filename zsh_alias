@@ -1,0 +1,82 @@
+# Aliases
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+# Add an "alert" alias for long running commands.  Use like so:
+#   sleep 10; alert
+#alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+
+# Stolen for TomNomNom
+alias grep='grep --color=auto'
+alias gg='git grep -ni'
+alias d="sudo docker"
+alias biggest="du -h --max-depth=1 | sort -h"
+alias :q="exit"
+alias j="jobs"
+alias follow="tail -f -n +1"
+
+#Own aliases
+
+alias reloadbash=". ~/.bashrc"
+alias reload="source ~/.p10k.zsh"
+alias resource="source ~/.zsh_alias"
+alias python=python3
+alias pyhton=python3
+alias top="htop"
+
+#logs
+alias log="cd /var/log"
+
+#nginx
+alias nx="cd /etc/nginx/"
+alias nxlog="cd /var/log/nginx/"
+alias nxslog="cd /var/log/nginx/"
+alias nxrs="sudo systemctl restart nginx"
+alias nxsta="sudo systemctl status nginx"
+alias nxlog2="sudo journalctl -u nginx"
+alias nxt="sudo nginx -t"
+
+# takeover tmux session in order to resize screen
+# TMUX
+alias takeover="tmux detach -a"
+# run resize after?
+
+# Grep IP
+alias grepip='grep -oE "\b([0-9]{1,3}\.){3}[0-9]{1,3}\b"'
+# BB TMUX
+alias bb="ta bugbounty"
+
+# Alias for bat
+alias catt="bat"
+
+# Aliases for random stuff
+alias reload='source $build_dir/.p10k.zsh'
+alias lsof="lsof -n"
+#alias ssx="xxh"
+alias gpull='git pull --rebase && git submodule update --init --recursive'
+alias diff="diff --color"
+alias ghidra="ghidraRun"
+alias powershell="pwsh"
+alias ghidra="/opt/ghidra_9.0.4/ghidraRun &"
+alias bytecodeviwer="java -jar /opt/Bytecode-Viewer*"
+
+# taken from https://natelandau.com/my-mac-osx-bash_profile/
+alias cp='cp -iv'                           # Preferred 'cp' implementation
+alias mv='mv -iv'                           # Preferred 'mv' implementation
+alias mkdir='mkdir -pv'                     # Preferred 'mkdir' implementation
+alias ll='ls -FGlAhp'                       # Preferred 'ls' implementation
+alias less='less -FSRXc'                    # Preferred 'less' implementation
+alias cd..='cd ../'                         # Go back 1 directory level (for fast typers)
+alias ..='cd ../'                           # Go back 1 directory level
+alias which='type -all'                     # which:        Find executables
+alias cic='set completion-ignore-case On'   # cic:          Make tab-completion case-insensitive
+alias myip='curl ip.appspot.com'                    # myip:         Public facing IP Address
+
+function ta() {
+        # attach to tmux session given as argument
+        tmux attach-session -t $1
+}
+
