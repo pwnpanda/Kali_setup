@@ -12,11 +12,6 @@ fi
 #Exit on failure - not working properly :(
 #set -e
 
-# Upgrade distro
-apt-get -y update
-apt-get -y upgrade
-apt-get -y dist-upgrade
-
 ##### (Cosmetic) Colour output
 RED="\033[01;31m"      # Issues/Errors
 GREEN="\033[01;32m"    # Success
@@ -29,6 +24,17 @@ RESET="\033[00m"       # Normal
 STAGE=0                                                         # Where are we up to
 TOTAL=$( grep '(${STAGE}/${TOTAL})' $0 | wc -l );(( TOTAL-- ))  # How many things have we got todo
 
+# Upgrade distro
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Update package list 1${RESET} Apt update 1"
+apt-get -y update
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Upgrade distro - new version${RESET} Apt dist-upgrade"
+apt-get -y dist-upgrade
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Update package list 2${RESET} Apt update 2"
+apt-get -y update
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Upgrade all packages${RESET} Apt upgrade"
+apt-get -y upgrade
+
+
 
 #### Add custom symbolic links
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Symlinks${RESET} Adding custom symlinks to /opt"
@@ -36,8 +42,6 @@ ln -s /usr/share/wordlists /opt/
 ln -s /usr/share/john /opt/john_assist
 ln -s /usr/share/hashcat_utils /opt/
 ln -s /usr/share/webshells /opt/
-
-
 
 #--- Start services
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Metasploit${RESET} fix services and update"
