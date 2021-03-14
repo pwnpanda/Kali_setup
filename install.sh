@@ -4,11 +4,14 @@
 # Setup live usb#1 with Rufus in DD mode with newest kali
 # Install from usb#1 to usb#2 using live boot from usb#1
 
+
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
    exit 1
 fi
 
+# TODO - change error handling to allow logging and proper reporting
+  # Give report at end of non-installed packages
 #Exit on failure - not working properly :(
 #set -e
 
@@ -45,9 +48,9 @@ ln -s /usr/share/webshells /opt/
 
 #--- Start services
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Metasploit${RESET} fix services and update"
-systemctl stop postgresql
-systemctl start postgresql
-msfdb reinit
+systemctl stop postgresql || echo -e ''${RED}'[!] Issue with stopping postgresql'${RESET} 1>&2
+systemctl start postgresql || echo -e ''${RED}'[!] Issue with starting postgresql'${RESET} 1>&2
+msfdb reinit || echo -e ''${RED}'[!] Issue with re-initializing msfdb'${RESET} 1>&2
 sleep 5s
 
 curdir=`pwd`
@@ -56,9 +59,6 @@ curdir=`pwd`
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}go${RESET} ~ programming language"
 apt -y -qq install golang \
   || echo -e ''${RED}'[!] Issue with apt install'${RESET} 1>&2
-echo 'export GOROOT=/usr/lib/go' >> ~/.bashrc
-echo 'export GOPATH=$HOME/go' >> ~/.bashrc
-echo 'export PATH=$PATH:$GOROOT/bin:$GOPATH/bin' >> ~/.bashrc
 
 
 ## Wordlist
@@ -68,33 +68,27 @@ git clone https://github.com/danielmiessler/SecLists.git || echo -e ''${RED}'[!]
 wget https://gist.githubusercontent.com/jhaddix/b80ea67d85c13206125806f0828f4d10/raw/c81a34fe84731430741e0463eb6076129c20c4c0/content_discovery_all.txt || echo -e ''${RED}'[!] Issue with getting content_discovery'${RESET} 1>&2
 wget https://gist.githubusercontent.com/jhaddix/86a06c5dc309d08580a018c66354a056/raw/96f4e51d96b2203f19f6381c8c545b278eaa0837/all.txt || echo -e ''${RED}'[!] Issue with getting worlist all'${RESET} 1>&2
 
-## impacket
+## impacket - TODO ISSUE - pip not found
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}impacket${RESET}"
 cd /opt
 git clone https://github.com/SecureAuthCorp/impacket.git || echo -e ''${RED}'[!] Issue with cloning impacted'${RESET} 1>&2
 cd impacket
 pip install . || echo -e ''${RED}'[!] Issue with pip install'${RESET} 1>&2
 
-## Gitrob
+## Gitrob - TODO ISSUE - /root/go/src/github.com/michenriksen/gitrob/core/router.go:41:54: too few values in assetfs.AssetFS literal
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}gitrob${RESET}"
 go get github.com/michenriksen/gitrob || echo -e ''${RED}'[!] Issue with go install'${RESET} 1>&2
-#echo 'export GITROB_ACCESS_TOKEN=' >> ~/.bashrc
 
 ## Bloodhound
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Bloodhound${RESET}"
 apt-get install -y bloodhound || echo -e ''${RED}'[!] Issue with apt install'${RESET} 1>&2
-    ##Neo4j - change password
-    ##neo4j console
 
-## Crackmapexec - Dev version
-(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}crackmap${RESET} ~ Dev version"
-apt-get install -y libssl-dev libffi-dev python-dev build-essential || echo -e ''${RED}'[!] Issue with apt support libs install'${RESET} 1>&2
-apt install -y pipenv || echo -e ''${RED}'[!] Issue with apt install of pipenv'${RESET} 1>&2
-cd /opt/
-git clone --recursive https://github.com/byt3bl33d3r/CrackMapExec || echo -e ''${RED}'[!] Issue with cloning repo'${RESET} 1>&2
-cd CrackMapExec && pipenv install || echo -e ''${RED}'[!] Issue with pipenv install'${RESET} 1>&2
-pipenv shell 
-python setup.py install || echo -e ''${RED}'[!] Issue with python install'${RESET} 1>&2
+## Crackmapexec
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}crackmapexec${RESET} ~ Using pipx"
+apt-get install -y libssl-dev libffi-dev python-dev build-essential || echo -e ''${RED}'[!] Issue with apt installing support libraries'${RESET} 1>&2
+python3 -m pip install pipx || echo -e ''${RED}'[!] Issue while installing pipx'${RESET} 1>&2
+pipx ensurepath || echo -e ''${RED}'[!] Issue while ensuring pipx is on path'${RESET} 1>&2
+pipx install crackmapexec || echo -e ''${RED}'[!] Issue while installing crackmapexec'${RESET} 1>&2
 
 ##### Install gobuster
 (( STAGE++ )); echo -e "\n\n ${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}gobuster${RESET} ~ Directory/File/DNS busting tool"
@@ -127,15 +121,10 @@ git clone https://github.com/tcstool/NoSQLMap.git /opt/NoSQLMap \
 
 #### Install pwntools
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Pwntools${RESET} ~ A toolsuite for ctfs."
-### Py2
-apt-get -y install python2.7 python-pip python-dev git libssl-dev libffi-dev build-essential || echo -e ''${RED}'[!] Issue when installing dependencies (apt)'${RESET} 1>&2
-pip install --upgrade pip || echo -e ''${RED}'[!] Issue when updating pip'${RESET} 1>&2
-pip install --upgrade pwntools || echo -e ''${RED}'[!] Issue when installing with pip'${RESET} 1>&2
-
 ### Py3
 apt-get -y install python3 python3-pip python3-dev git libssl-dev libffi-dev build-essential || echo -e ''${RED}'[!] Issue when installing dependencies (apt)'${RESET} 1>&2
 python3 -m pip install --upgrade pip || echo -e ''${RED}'[!] Issue when updating pip3'${RESET} 1>&2
-python3 -m pip install --upgrade git+https://github.com/Gallopsled/pwntools.git@dev3 || echo -e ''${RED}'[!] Issue when installing with pip3'${RESET} 1>&2
+python3 -m pip install --upgrade pwntools || echo -e ''${RED}'[!] Issue when installing with pip3'${RESET} 1>&2
 
 
 #### Install steghide
@@ -171,6 +160,7 @@ git clone https://github.com/trustedsec/unicorn.git || echo -e ''${RED}'[!] Issu
 cd /opt/
 mkdir ghidra && cd ghidra
 wget https://ghidra-sre.org/ghidra_9.2.2_PUBLIC_20201229.zip || echo -e ''${RED}'[!] Issue when getting zipfile'${RESET} 1>&2
+apt-get install unzip  || echo -e ''${RED}'[!] Error when installing unzip command'${RESET} 1>&2
 unzip ghidra_9.2.2_PUBLIC_20201229.zip || echo -e ''${RED}'[!] Error when extracting archive'${RESET} 1>&2
 rm ghidra_9.2.2_PUBLIC_20201229.zip
 mv ghidra_9.2.2 /opt
@@ -180,17 +170,18 @@ ln -s /opt/ghidra_9.2.2/ghidraRun /usr/bin/ghidra || echo -e ''${RED}'[!] Error 
 
 
 #### Install Reverse Shell Generator
-(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Ghidra${RESET} ~ RE tool."
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Reverse Shell Generator${RESET} ~ Tool for reverse shell Payloads."
 cd /opt
 git clone https://github.com/mthbernardes/rsg.git || echo -e ''${RED}'[!] Issue when cloning repo'${RESET} 1>&2
 cd rsg
+chmod +x install.sh || echo -e ''${RED}'[!] Issue when making install script executable'${RESET} 1>&2
 ./install.sh || echo -e ''${RED}'[!] Issue when running install script'${RESET} 1>&2
 
 
 #### Install ZSH & Terminal
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}ZSH${RESET} ~ CMD."
 #Install zsh
-apt-get -y install zsh || echo -e ''${RED}'[!] Issue when installing (apt)'${RESET} 1>&2
+apt-get -y install zsh || echo -e ''${RED}'[!] Issue when installing ZSH (apt)'${RESET} 1>&2
 
 #Add .zshrc
 cp /opt/Kali_setup/zshrc ~/.zshrc
@@ -219,7 +210,7 @@ cp Meslo*.ttf /usr/share/fonts/truetype/MesloLGS
 fc-cache -f -v || echo -e ''${RED}'[!] Issue when updating font cache'${RESET} 1>&2
 
 #Add terminal Terminal Emulator (xfce4-terminal)
-apt-get install xfce4-terminal || echo -e ''${RED}'[!] Issue when installing xfce4 from apt'${RESET} 1>&2
+apt-get install -y xfce4-terminal || echo -e ''${RED}'[!] Issue when installing xfce4 from apt'${RESET} 1>&2
 
 #Add framer theme
 cd curdir
@@ -247,9 +238,10 @@ cp /opt/Kali_setup/tmux.conf /root/.tmux.conf
 cp /opt/Kali_setup/vimrc ~/.vimrc
 cp /opt/Kali_setup/vimrc /root/.vimrc
 
-#Add instructions
-echo "Set terminal to XFC4, Set theme to Framer, Add FiraCode as font, Doublecheck that zsh is the default shell"
-
+# Setup GO paths
+echo 'export GOROOT=/usr/lib/go' >> $curdir/.zsh_alias
+echo 'export GOPATH=$HOME/go' >> $curdir/.zsh_alias
+echo 'export PATH=$PATH:$GOROOT/bin:$GOPATH/bin' >> $curdir/..zsh_alias
 
 #### Install priv keys and config
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}keys and ssh config${RESET} ~ Shell env."
@@ -279,7 +271,7 @@ ln -s /usr/bin/batcat ~/.local/bin/bat || echo -e ''${RED}'[!] Issue when creati
 
 # Install xxh
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}xxh${RESET} ~ Shell env for any remote host."
-pip3 install -y xxh-xxh || echo -e ''${RED}'[!] Issue when installing xxh from pip'${RESET} 1>&2
+pip3 install --no-input xxh-xxh || echo -e ''${RED}'[!] Issue when installing xxh from pip'${RESET} 1>&2
 xxh +RI xxh-plugin-zsh-robin+git+https://github.com/pwnpanda/xxh-plugin-zsh-robin || echo -e ''${RED}'[!] Issue when grabbing own config from git'${RESET} 1>&2
 
 # Install vscodium
@@ -307,5 +299,16 @@ updatedb
 cd ~/ &>/dev/null
 # change ownership
 chown -R robin:robin /opt
+
+#Add instructions
+echo "1."
+echo "Terminal setup: Set terminal to XFC4, Set theme to Framer, Add FiraCode as font, Doublecheck that zsh is the default shell"
+echo "2."
+echo "For GitRob: Add GITROB_ACCES_TOKEN=<token> to $curdir/.zsh_alias. Generate token from github."
+echo "3."
+echo "Bloodhound: Change password in Neo4j and run neo4j console"
+echo ""
+echo "--"
+echo "Script done!"
 
 exit
