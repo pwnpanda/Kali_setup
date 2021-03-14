@@ -29,25 +29,6 @@ RESET="\033[00m"       # Normal
 STAGE=0                                                         # Where are we up to
 TOTAL=$( grep '(${STAGE}/${TOTAL})' $0 | wc -l );(( TOTAL-- ))  # How many things have we got todo
 
-# TODO
-  # bat
-  # apt install -y bat
-  # mkdir -p ~/.local/bin
-  # ln -s /usr/bin/batcat ~/.local/bin/bat
-
-  # xxh
-  # pip3 install -y xxh-xxh
-  # xxh +RI xxh-plugin-zsh-robin+git+https://github.com/pwnpanda/xxh-plugin-zsh-robin
-
-  # vscodium
-  # wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
-  #  | gpg --dearmor \
-  #  | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
-  # echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs vscodium main' \
-  #  | sudo tee /etc/apt/sources.list.d/vscodium.list
-  # sudo apt update
-  # sudo apt install codium
-
 
 #### Add custom symbolic links
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Symlinks${RESET} Adding custom symlinks to /opt"
@@ -286,6 +267,30 @@ cd /opt
 wget https://github.com/Konloch/bytecode-viewer/releases/download/v2.9.22/Bytecode-Viewer-2.9.22.jar || echo -e ''${RED}'[!] Issue when pulling jarfile'${RESET} 1>&2
 
 
+# Install bat
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}BAT${RESET} ~ cat with syntax highlighting."
+apt install -y bat || echo -e ''${RED}'[!] Issue when installing bat from apt'${RESET} 1>&2
+mkdir -p ~/.local/bin || echo -e ''${RED}'[!] Issue when making directory for symbolic link'${RESET} 1>&2
+ln -s /usr/bin/batcat ~/.local/bin/bat || echo -e ''${RED}'[!] Issue when creating symbolic link'${RESET} 1>&2
+
+# Install xxh
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}xxh${RESET} ~ Shell env for any remote host."
+pip3 install -y xxh-xxh || echo -e ''${RED}'[!] Issue when installing xxh from pip'${RESET} 1>&2
+xxh +RI xxh-plugin-zsh-robin+git+https://github.com/pwnpanda/xxh-plugin-zsh-robin || echo -e ''${RED}'[!] Issue when grabbing own config from git'${RESET} 1>&2
+
+# Install vscodium
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}VSCodium${RESET} ~ Text editor."
+wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
+  | gpg --dearmor \
+  | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg || echo -e ''${RED}'[!] Issue when adding keys for apt repository'${RESET} 1>&2
+echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] https://paulcarroty.gitlab.io/vscodium-deb-rpm-repo/debs vscodium main' \
+  | sudo tee /etc/apt/sources.list.d/vscodium.list || echo -e ''${RED}'[!] Issue when grabbing apt package resources'${RESET} 1>&2
+sudo apt update || echo -e ''${RED}'[!] Issue when running apt update'${RESET} 1>&2
+sudo apt install codium || echo -e ''${RED}'[!] Issue when installing codium from apt'${RESET} 1>&2
+
+# Install feroxbuster
+(( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) Installing ${GREEN}Feroxbuster${RESET} ~ Faster Gobuster."
+sudo apt install -y feroxbuster || echo -e ''${RED}'[!] Issue when installing feroxbuster from apt'${RESET} 1>&2
 
  ##### Clean the system
 (( STAGE++ )); echo -e "\n\n${GREEN}[+]${RESET} (${STAGE}/${TOTAL}) ${GREEN}Cleaning${RESET} the system"
